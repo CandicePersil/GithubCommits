@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+         <meta charset="utf-8">
+         <title>Github commit list</title>
+    </head>
+    <body>
+        <h1>Retrieve commits from a chosen repository</h1>
+
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+        <form action="{% url 'githubcommits:process' %}" method="post">
+            {% csrf_token %}
+            <label for="process_repo_name">Repository: </label>
+            <input id="process_repo_name" type="text" name="process_repo_name"
+                   value="{{ repo_name }}" maxlength="100" required>
+            <input type="submit" value="Submit">
+        </form>
+
+        {% if commit_list %}
+             <h2>List of commits</h2>
+             <h3>{{ repo_name }}</h3>
+             {% for com in commit_list %}
+                  <li>{{ com }}</li>
+             {% endfor %}
+        {% else %}
+            <p>No commit found.</p>
+        {% endif %}
+    </body>
+</html>
